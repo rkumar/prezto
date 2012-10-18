@@ -32,7 +32,13 @@ zstyle ':prezto:load' pmodule \
   'spectrum' \
   'utility' \
   'completion' \
-  'prompt'
+  'prompt' \
+  'git' \
+  'ruby' \
+  'history-substring-search' \
+  'syntax-highlighting'
+
+# plugins=(git ruby history-substring-search zsh-syntax-highlighting)
 
 #
 # Editor

@@ -11,4 +11,117 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+#
+# I've copied my aliases from ohmyzsh, need to check for overlaps with those defined by prezto
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/aliases.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/aliases.zsh"
+fi
 
+# copied from .zshrc.orig
+
+# Set to the name theme to load.
+
+# Set to this to use case-sensitive completion
+# export CASE_SENSITIVE="true"
+
+# Comment this out to disable weekly auto-update checks
+# export DISABLE_AUTO_UPDATE="true"
+
+# Uncomment following line if you want to disable colors in ls
+# export DISABLE_LS_COLORS="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# TODO
+# plugins=(git ruby history-substring-search zsh-syntax-highlighting)
+
+#source $ZSH/oh-my-zsh.sh
+
+export WDHOME=$HOME/.wd
+#source $WDHOME/wdaliases.sh # 2012-10-18 already in aliases.zsh
+
+# Customize to your needs...
+#  2011-10-27 Now phasing out macports in favor of homebrew.
+#  also my macports are old, so i need to push them down the path
+#export PATH=/Users/rahul/.rvm/gems/ruby-1.9.2-head/bin:/Users/rahul/.rvm/gems/ruby-1.9.2-head@global/bin:/Users/rahul/.rvm/rubies/ruby-1.9.2-head/bin:/Users/rahul/.rvm/bin:/usr/local/bin:/usr/bin:/usr/sbin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/Users/rahul/bin:/Users/rahul/Desktop/Downloads/ImageMagick-6.2.0/bin
+# NOTE the next path was operational
+#export PATH=/usr/local/bin:/usr/bin:/usr/sbin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/Users/rahul/bin:/Users/rahul/Desktop/Downloads/ImageMagick-6.2.0/bin
+
+
+. ~/bin/z.sh
+function precmd () {
+    z --add "$(pwd -P)"
+}
+
+source /Users/rahul/.lightning/functions.sh
+# when i do alt-.
+bindkey '\e.' insert-last-word 
+# clears current line and then restores it after command
+bindkey "^t" push-line-or-edit
+# edit command line using C-xC-e
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '\C-x\C-e' edit-command-line
+
+export TSV_PROJECT=rbcurse
+export TMB_USER=rahul2012@gmail.com
+export MAILID=rahul2012@gmail.com
+export MAIL_ID=$MAILID     # for bugzy
+export MAILID_STUB=rahul2012
+export GMAIL_USER=rahul2012
+export TMB_PASS=Fl0yd987
+export TSV_PROJECT=rbcurse
+export TODO_SHOW_ALL=0
+
+dirs ~/work/projects/bugzyrb/lib ~/work/projects/todorb/lib ~/work/projects/rbcurse/examples ~/work/projects/rbcurse/lib ~/work/projects/rbcurse-core/example ~/work/projects/rbcurse-extras/
+# use dirs -v to see, pushd +n to go, popd to pop and go http://www.acm.uiuc.edu/workshops/zsh/dir_stack.html
+# # use cd ~5 to goto 5th, cd ~<TAB> , http://zzapper.co.uk/zsh-wonderful-use-of-dirspopdpushp-cd-5/
+
+# used by source-highlight
+export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
+export LESS=' -R '
+# http://jaredforsyth.com/blog/2010/may/30/easy-zsh-auto-completion/
+_bugzyrb() {
+        reply=(`bugzyrb --list-actions`)
+    }
+compctl -K _bugzyrb bugzyrb
+compctl -k "(add archive canceled chpri chstart closed comment del depri desc fix grep grepcomment help lbs list listproj ls lsprj mdel mdepri modify mpri newest oldest open overdue print qadd quick recentcomments recentlog selectm show started stopped tag upcoming viewcomment viewlog)" bugzy
+compctl -k "( active add all annotate append blocked burndown.daily burndown.monthly burndown.weekly calendar color completed config count delete denotate description diagnostics done duplicate edit export export.csv export.ical export.yaml ghistory ghistory.annual help history history.annual import info list log long ls merge minimal newest next oldest overdue prepend projects pull push recurring shell show start stats stop summary tags timesheet unblocked undo version waiting)" task
+export TERM=screen-256color
+eval `dircolors -b`
+#export RUBYOPT='--disable-gems -rfaster_rubygems'
+# get 256 colors 0 is black, 255 is white
+# e.g. " $(EXT_COLOR 176) some text "
+function EXT_COLOR () { echo -ne "\\033[38;5;$1m"; }
+
+# for vmail
+export EDITOR='/usr/local/bin/vim'
+export VISUAL=$EDITOR
+
+# for vmail
+export VMAIL_HTML_PART_READER='elinks -dump'
+setopt autopushd
+
+# added 2012-10-15 after installing pip, virtualenv abd virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+# added path to go since we are trying out golang added 2012-10-17 
+PATH=$PATH:/usr/local/go/bin
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+export TERM=screen-256color
+# added path to go since we are trying out golang added 2012-10-17 
+PATH=$PATH:/usr/local/go/bin
+PATH=$PATH:/Users/rahul/bin
+
+export PATH
+# for screenrc
+export _PATH=$PATH
+
+
+# 2012-10-18 quickly store a note given a file name, using n, and list using nls
+# requires a folder created ~/notes
+
+n() { $EDITOR ~/notes/"$*".txt }  
+nls() { ls -c ~/notes/ | grep "$*" } 
+# 2012-10-18 query wiki for a short definition
+mwiki() { dig +short txt "$*".wp.dg.cx; }
