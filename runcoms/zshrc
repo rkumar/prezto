@@ -18,6 +18,7 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/aliases.zsh" ]]; then
 fi
 
 # copied from .zshrc.orig
+export XYZ="@gmail.com"
 
 # Set to the name theme to load.
 
@@ -63,13 +64,18 @@ autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
 
+# next is not required if i am calling from .zpreztorc since that has vi binding call
+# 2012-10-26 tired of emacs bindings, slow - back to vi bindings after 10 years or more
+# bindkey -v
+
 export TSV_PROJECT=rbcurse
-export TMB_USER=rahul2012@gmail.com
-export MAILID=rahul2012@gmail.com
-export MAIL_ID=$MAILID     # for bugzy
 export MAILID_STUB=rahul2012
+export TMB_USER="$MAILID_STUB$XYZ"
+export MAILID="$MAILID_STUB$XYZ"
+export MAIL_ID=$MAILID     # for bugzy
 export GMAIL_USER=rahul2012
-export TMB_PASS=Fl0yd987
+# Darn this is going onto github !!
+export TMB_PASS=Fl0
 export TSV_PROJECT=rbcurse
 export TODO_SHOW_ALL=0
 
@@ -125,3 +131,8 @@ n() { $EDITOR ~/notes/"$*".txt }
 nls() { ls -c ~/notes/ | grep "$*" } 
 # 2012-10-18 query wiki for a short definition
 mwiki() { dig +short txt "$*".wp.dg.cx; }
+
+setopt CD_ABLE_VARS
+setopt AUTO_CD
+# 10 second wait if you do something that will delete everything.  I wish I'd had this before...
+setopt RM_STAR_WAIT

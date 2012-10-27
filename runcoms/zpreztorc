@@ -7,7 +7,7 @@
 
 #
 # General
-#
+# https://github.com/sorin-ionescu/prezto/blob/master/runcoms/zpreztorc
 
 # Set case-sensitivity for completion, history lookup, etc.
 zstyle ':prezto:*:*' case-sensitive 'no'
@@ -38,6 +38,7 @@ zstyle ':prezto:load' pmodule \
   'history-substring-search' \
   'syntax-highlighting'
 
+# copied from old file
 # plugins=(git ruby history-substring-search zsh-syntax-highlighting)
 
 #
@@ -45,7 +46,8 @@ zstyle ':prezto:load' pmodule \
 #
 
 # Set the key mapping style to 'emacs' or 'vi'.
-zstyle ':prezto:module:editor' keymap 'emacs'
+# changed to vi on 2012-10-26 (however substring shd work)
+zstyle ':prezto:module:editor' keymap 'vi'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'

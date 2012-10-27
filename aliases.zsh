@@ -69,6 +69,7 @@ alias helpyard='open http://rubydoc.info/docs/yard/file/docs/GettingStarted.md'
 alias totalrecall='cd ~/myblogs/totalrecall'
 alias work='cd ~/work'
 alias bin='cd ~/bin'
+alias tmp='cd ~/tmp'
 #alias locate='/sw/bin/locate'
 alias vew='vim `ls -t | head -1`'
 alias mmd='~/bin/multis.sh'
@@ -102,6 +103,7 @@ alias gst='git status'
 #alias vimbp='vi ~/.bash_profile'
 #alias bp='vi ~/.bash_profile'
 alias zrc='vi ~/.zshrc'
+alias vrc='vi ~/.zshrc'
 alias vimrc='vi ~/.vimrc'
 alias helpsed='view ~/Documents/Technical/sed1line.txt'
 alias sedmanual='open /Users/rahul/Documents/Technical/sed.html'
@@ -146,7 +148,7 @@ alias tg='todoapp.sh -d ~/ ' # global todo general, like learnings
 #alias lvim='vim -c "normal '\''0"'
 
 # editors : elvis - fast vi, zile - tiny emacs
-#alias e='elvis'
+alias e='elvis'
 alias m='most'
 #alias z='zile'
 alias notes='appenddiary.sh NOTES'
@@ -179,9 +181,19 @@ alias bli='brew list'
 alias ta='task'
 # shell program that prints bugzy output instantly
 alias bs='~/bin/b.sh'
-alias emacs="/usr/local/Cellar/emacs/HEAD/Emacs.app/Contents/MacOS/Emacs -nw"
-alias et="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ~/.emacs.d/bin/emacs-gui.sh"
-alias ec="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a ~/.emacs.d/bin/emacs-gui.sh"
+# I tried this out since emacs was loading slowly, not that i use it, it was
+# due to changes in Lion in /etc/hosts
+
+#alias emacs="/usr/local/Cellar/emacs/HEAD/Emacs.app/Contents/MacOS/Emacs -nw"
+#alias et="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ~/.emacs.d/bin/emacs-gui.sh"
+#alias ec="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a ~/.emacs.d/bin/emacs-gui.sh"
 
 # added 2012-10-15 after installing pip, virtualenv abd virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh
+
+alias -g G='| egrep'
+alias -g L='| less'
+alias -g T='| tail'
+alias -g TL='| tail -20'
+alias -g RE='~/README'
+alias -g AL='~/.zprezto/aliases.zsh'
