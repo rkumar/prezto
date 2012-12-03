@@ -1,4 +1,4 @@
-#
+# Last update: 2012-12-02 20:43
 # Executes commands at the start of an interactive session.
 #
 # Authors:
@@ -27,14 +27,16 @@ export XYZ="@gmail.com"
 
 # Comment this out to disable weekly auto-update checks
 # export DISABLE_AUTO_UPDATE="true"
+# RK 2012-11-2 don't update tmux tab title
+#export DISABLE_AUTO_TITLE="true"
 
 # Uncomment following line if you want to disable colors in ls
 # export DISABLE_LS_COLORS="true"
 
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Example format: plugins=(rails git textmate ruby lighthouse)
-# TODO
-# plugins=(git ruby history-substring-search zsh-syntax-highlighting)
+# TODO NOT USED, go to .zpreztorc
+# plugins=(git ruby utility history-substring-search directory zsh-syntax-highlighting)
 
 #source $ZSH/oh-my-zsh.sh
 
@@ -49,20 +51,60 @@ export WDHOME=$HOME/.wd
 #export PATH=/usr/local/bin:/usr/bin:/usr/sbin:/opt/local/bin:/opt/local/sbin:/bin:/sbin:/Users/rahul/bin:/Users/rahul/Desktop/Downloads/ImageMagick-6.2.0/bin
 
 
-. ~/bin/z.sh
-function precmd () {
-    z --add "$(pwd -P)"
-}
+# RK 2012-11-9 cutting out z and zz since we have cd -<TAB> in zsh
+# reintroducing since cd is not getting all the dirs i am going to.
+#source ~/bin/z.sh
+. `brew --prefix`/etc/profile.d/z.sh
+#function chpwd () {
+    #z --add "$(pwd -P)"
+#}
 
 source /Users/rahul/.lightning/functions.sh
+# v - edit-command-line in vim mode
+# '#' saves command in hist without executing
 # when i do alt-.
 bindkey '\e.' insert-last-word 
 # clears current line and then restores it after command
-bindkey "^t" push-line-or-edit
+#bindkey "^t" push-line-or-edit
 # edit command line using C-xC-e
 autoload -U edit-command-line
 zle -N edit-command-line
 bindkey '\C-x\C-e' edit-command-line
+# the next exists in emacs mode but not mapped in vi
+# Will quote the single quotes in a line
+bindkey "'" quote-line
+# save command without executing, you can run a command, then it resumes prev one - ESC-Q
+bindkey "Q" push-line-or-edit
+bindkey "^Q" push-line-or-edit
+# i think all these or most of them are getting overriden by .zpreztorc
+# executes command and maintains cursor position so you can edit  - ESC A
+bindkey "A" accept-and-hold
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+
+bindkey -M viins '^r' history-incremental-search-backward
+bindkey -M vicmd '^r' history-incremental-search-backward
+
+#bindkey "^[^[OC" emacs-forward-word
+#bindkey "^[^[OD" emacs-backward-word
+bindkey "B" emacs-backward-word
+bindkey "F" emacs-forward-word
+bindkey "b" emacs-backward-word
+bindkey "f" emacs-forward-word
+# transpose will only work in input mode, not command mode
+bindkey "t" transpose-words
+
+bindkey "^K" kill-line
+#"^U" kill-whole-line
+bindkey "^W" backward-kill-word
+bindkey "^H" backward-kill-word
+bindkey "D" kill-word
+bindkey "K" backward-kill-line
+bindkey "d" kill-word
+bindkey "k" backward-kill-line
+bindkey "^?" backward-kill-word
+# copy prev is also mapped to Alt-m
+bindkey -M viins '^O' copy-prev-shell-word
 
 # next is not required if i am calling from .zpreztorc since that has vi binding call
 # 2012-10-26 tired of emacs bindings, slow - back to vi bindings after 10 years or more
@@ -79,7 +121,7 @@ export TMB_PASS=Fl0
 export TSV_PROJECT=rbcurse
 export TODO_SHOW_ALL=0
 
-dirs ~/work/projects/bugzyrb/lib ~/work/projects/todorb/lib ~/work/projects/rbcurse/examples ~/work/projects/rbcurse/lib ~/work/projects/rbcurse-core/example ~/work/projects/rbcurse-extras/
+dirs ~/work/projects/bugzyrb/lib ~/work/projects/todorb/lib ~/work/projects/rbcurse/examples ~/work/projects/rbcurse/lib ~/work/projects/rbcurse-core/example ~/work/projects/rbcurse-extras/ /Users/rahul/.zprezto/modules
 # use dirs -v to see, pushd +n to go, popd to pop and go http://www.acm.uiuc.edu/workshops/zsh/dir_stack.html
 # # use cd ~5 to goto 5th, cd ~<TAB> , http://zzapper.co.uk/zsh-wonderful-use-of-dirspopdpushp-cd-5/
 
@@ -94,7 +136,7 @@ compctl -K _bugzyrb bugzyrb
 compctl -k "(add archive canceled chpri chstart closed comment del depri desc fix grep grepcomment help lbs list listproj ls lsprj mdel mdepri modify mpri newest oldest open overdue print qadd quick recentcomments recentlog selectm show started stopped tag upcoming viewcomment viewlog)" bugzy
 compctl -k "( active add all annotate append blocked burndown.daily burndown.monthly burndown.weekly calendar color completed config count delete denotate description diagnostics done duplicate edit export export.csv export.ical export.yaml ghistory ghistory.annual help history history.annual import info list log long ls merge minimal newest next oldest overdue prepend projects pull push recurring shell show start stats stop summary tags timesheet unblocked undo version waiting)" task
 export TERM=screen-256color
-eval `dircolors -b`
+
 #export RUBYOPT='--disable-gems -rfaster_rubygems'
 # get 256 colors 0 is black, 255 is white
 # e.g. " $(EXT_COLOR 176) some text "
@@ -108,16 +150,26 @@ export VISUAL=$EDITOR
 export VMAIL_HTML_PART_READER='elinks -dump'
 setopt autopushd
 
+# allow for hash to comment a line, if you use # in vim in command mode
+setopt interactivecomments
+
 # added 2012-10-15 after installing pip, virtualenv abd virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
-# added path to go since we are trying out golang added 2012-10-17 
-PATH=$PATH:/usr/local/go/bin
+# This throws up and error when starting up, file not found ~/.virtualenv/hook.log.1
+#source /usr/local/bin/virtualenvwrapper.sh
+#
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export TERM=screen-256color
 # added path to go since we are trying out golang added 2012-10-17 
 PATH=$PATH:/usr/local/go/bin
 PATH=$PATH:/Users/rahul/bin
+# RK added 2012-11-16 so that i don't need to add g prefix to coreutil commands
+PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+#
+# RK 2012-11-10 upgrade of coreutils
+#eval `gdircolors -b`
+# RK added 2012-11-27 2012-11-27 - 21:24 
+eval `dircolors ~/dircolors_file`
 
 export PATH
 # for screenrc
@@ -126,13 +178,110 @@ export _PATH=$PATH
 
 # 2012-10-18 quickly store a note given a file name, using n, and list using nls
 # requires a folder created ~/notes
-
-n() { $EDITOR ~/notes/"$*".txt }  
-nls() { ls -c ~/notes/ | grep "$*" } 
+#n() { $EDITOR ~/notes/"$*".txt }  
+#nls() { ls -c ~/notes/ | grep "$*" } 
 # 2012-10-18 query wiki for a short definition
 mwiki() { dig +short txt "$*".wp.dg.cx; }
 
+#  With CDABLEVARS, if the argument to cd is the name of a parameter whose value is a valid directory, it will become the current directory. 
+#  e.g. foo=~/tmp; cd foo
+# http://zsh.sourceforge.net/Intro/intro_16.html
 setopt CD_ABLE_VARS
 setopt AUTO_CD
 # 10 second wait if you do something that will delete everything.  I wish I'd had this before...
 setopt RM_STAR_WAIT
+
+MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+export MANPATH
+
+# makes searching zsh documentation easier
+# However, conflicts with MANPAGER which we've set to most
+# e.g. zman fc 
+zman() {
+  OLDMANPAGER=$MANPAGER
+  unset MANPAGER
+  PAGER="less -g -s '+/^       "$1"'" man zshall
+  export MANPAGER=$OLDMANPAGER
+}
+# what uses a brew and what of it do I already have
+uses(){
+    echo "Don't have |   Have "
+    comm -2 <(brew uses $1) <(brew list)
+}
+# what deps does some brew use, and which do i have and which don't i have
+deps() {
+    echo "Don't have |  Have "
+    comm -2 <(brew deps $1) <(brew list)
+}
+
+# quick brew search local without going into pull requests
+bs(){  gls /usr/local/Library/Formula/ | grep $1 | sed 's/\.rb$//g' | sort }
+# search for some keyword, and show what I already have
+brmatch(){
+    echo "Don't have  |  Have "
+    comm <(bs $1) <(brew list | grep $1)
+}
+# http://rjpower.org/wordpress/bash-isms-i-wish-i-knew-earlier/
+ a() { alias $1=cd\ $PWD; }
+# anywhere type: 'a 1', now doing '1' will take you to that dir
+
+# put timestamp in shell
+function unix_ts { LBUFFER="${LBUFFER}$(date '+%Y%m%d%H%M%S')" }
+zle -N unix_ts
+bindkey "^t" unix_ts
+
+###-begin-npm-completion-###
+#
+# npm command completion script
+#
+# Installation: npm completion >> ~/.bashrc  (or ~/.zshrc)
+# Or, maybe: npm completion > /usr/local/etc/bash_completion.d/npm
+#
+
+COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
+COMP_WORDBREAKS=${COMP_WORDBREAKS/@/}
+export COMP_WORDBREAKS
+
+if type complete &>/dev/null; then
+  _npm_completion () {
+    local si="$IFS"
+    IFS=$'\n' COMPREPLY=($(COMP_CWORD="$COMP_CWORD" \
+                           COMP_LINE="$COMP_LINE" \
+                           COMP_POINT="$COMP_POINT" \
+                           npm completion -- "${COMP_WORDS[@]}" \
+                           2>/dev/null)) || return $?
+    IFS="$si"
+  }
+  complete -F _npm_completion npm
+elif type compdef &>/dev/null; then
+  _npm_completion() {
+    si=$IFS
+    compadd -- $(COMP_CWORD=$((CURRENT-1)) \
+                 COMP_LINE=$BUFFER \
+                 COMP_POINT=0 \
+                 npm completion -- "${words[@]}" \
+                 2>/dev/null)
+    IFS=$si
+  }
+  compdef _npm_completion npm
+elif type compctl &>/dev/null; then
+  _npm_completion () {
+    local cword line point words si
+    read -Ac words
+    read -cn cword
+    let cword-=1
+    read -l line
+    read -ln point
+    si="$IFS"
+    IFS=$'\n' reply=($(COMP_CWORD="$cword" \
+                       COMP_LINE="$line" \
+                       COMP_POINT="$point" \
+                       npm completion -- "${words[@]}" \
+                       2>/dev/null)) || return $?
+    IFS="$si"
+  }
+  compctl -K _npm_completion npm
+fi
+###-end-npm-completion-###
+# so says brew info node, so npm binaries can be picked up. 2012-11-30 - 23:46 
+export PATH=$PATH:/usr/local/share/npm/bin
