@@ -12,13 +12,18 @@ alias _='sudo'
 #alias g='grep -in'
 
 # Show history
-alias history='fc -l 1'
+# the next one prevents us from using history with arguments since it has hardcoded 1
+# which means the entire history. 
+#alias history='fc -l 1'
+alias history='fc -l '
 
 # List direcory contents
 alias lsa='ls -lah'
 alias l='ls -la'
 alias ll='ls -l'
 alias ks=ls # often screw this up
+# list only directories
+alias lsd='ls -d *(/)'
 
 alias afind='ack-grep -il'
 
@@ -29,10 +34,14 @@ source $WDHOME/wdaliases.sh # 2012-10-18 already happening in .zshrc
 # next line giving zsh: file exists: /Users/rahul/.wd/wdenv
 #
 wdenv
+# These options only work in GNU ls (gls) not in bsd
 export LS_OPTIONS='-F --color'
 # HERE IS HOW LS_COLORS os getting its value
 # eval `dircolors -b ~/colorrc-ansi` # error in zsh
-alias ls="ls $LS_OPTIONS"
+# RK 2012-11-10 upgrade of coreutils has put g prefix
+# git is aliasing gls
+unalias gls 2>/dev/null
+alias ls="gls $LS_OPTIONS"
 # RK added on 20070208 20:46:28
 # http://www.caliban.org/bash/
 # correct minor cd errors
@@ -48,20 +57,20 @@ alias lc='ls -F --color=none'
 #alias vim='/Applications/Vim.app/Contents/MacOS/Vim'
 alias irb='irb --readline -r irb/completion --prompt inf_ruby'
 alias ri='ri -f ansi -T'
-alias helpdoc='links file:///Users/rahul/Documents/ruby/core-1.8.6_HEAD/index.html'
+alias helpdoc='open file:///Users/rahul/Documents/ruby/core-1.8.6_HEAD/index.html'
 alias opendoc='open file:///Users/rahul/Documents/ruby/core-1.8.6_HEAD/index.html'
 #alias helpruby='links file:///Users/rahul/Documents/ruby/core-1.8.6_HEAD/index.html'
-alias helpruby='links file:///Users/rahul/Documents/ruby/ruby_1_9_2_core/index.html'
+alias helpruby='open file:///Users/rahul/Documents/ruby/ruby_1_9_2_core/index.html'
 alias helpruby19='open http://yardoc.org/docs/ruby-core/'
 alias helpruby187='open http://ruby-doc.org/core-1.8.7/index.html'
 #alias helpstdlib='links file:///localhost/Users/rahul/Documents/ruby/stdlib/index.html'
-alias helpstdlib='links file:///Users/rahul/Documents/ruby/ruby_1_9_2_stdlib/index.html'
+alias helpstdlib='open file:///Users/rahul/Documents/ruby/ruby_1_9_2_stdlib/index.html'
 alias openstdlib='open file:////Users/rahul/Documents/ruby/stdlib/index.html'
-alias helpsqlite='links file:///opt/local/lib/ruby/gems/1.8/gems/sqlite3-ruby-1.2.4/doc/faq/faq.html'
+alias helpsqlite='open file:///opt/local/lib/ruby/gems/1.8/gems/sqlite3-ruby-1.2.4/doc/faq/faq.html'
 #alias helpbash='links ~/Documents/Technical/abs-guide/index.html'
-alias helpbash='links ~/Documents/Technical/abs-guide4/HTML/index.html'
+alias helpbash='open ~/Documents/Technical/abs-guide4/HTML/index.html'
 alias helpbashref='open /Users/rahul/Documents/Technical/abs-guide4/HTML/refcards.html'
-alias helpmarkdown='links /Users/rahul/Documents/Technical/markdownsyntax.html'
+alias helpmarkdown='open /Users/rahul/Documents/Technical/markdownsyntax.html'
 
 alias helpvimhtml='vim ~/vimHTML.html'
 #alias helpyard='open http://yardoc.org/docs/yard/file:GettingStarted.md#taglist'
@@ -102,12 +111,17 @@ alias ga='git add'
 alias gst='git status'
 #alias vimbp='vi ~/.bash_profile'
 #alias bp='vi ~/.bash_profile'
-alias zrc='vi ~/.zshrc'
-alias vrc='vi ~/.zshrc'
+#alias zrc='vi ~/.zshrc'
+alias zrc='vi ~/.zpreztorc ZS'
+alias vrc='vi ~/.vimrc'
 alias vimrc='vi ~/.vimrc'
 alias helpsed='view ~/Documents/Technical/sed1line.txt'
 alias sedmanual='open /Users/rahul/Documents/Technical/sed.html'
 alias ff="find . -type f -name "
+alias vimneo='vim -u ~/vimrc-spf13'
+alias vimspf='vim -u ~/vimrc-spf13'
+# minsed, supposed to be faster cleaner
+alias msed='sed'
 
 # http://www.amirwatad.com/blog/archives/2009/01/30/enhanced-bash/
 #Make sure all terminals save history
@@ -163,7 +177,7 @@ export RUBYLIB=~/work/projects/rbcurse-core/lib
 export MANPAGER='most'
 #[[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 alias mdf='mdfind -name'
-. ~/bin/z.sh # http://github.com/rupa/z/blob/master/z.sh directory jumper
+#source ~/bin/z.sh # http://github.com/rupa/z/blob/master/z.sh directory jumper
 alias vim='/usr/local/bin/vim' # vim 7.3 not released as port as yet
 alias vi='/usr/local/bin/vim'
 #    ruby lightning gem
@@ -172,10 +186,17 @@ source /Users/rahul/.lightning/functions.sh
 #alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 #alias cvls='vlc -I rc'
 # alias d does not work
-alias d=dooby
+#alias d=dooby
 alias bl='b list --fields="1,2,4,9,10" --sort="9,9 -r" -CLO -CAN'
 alias screen='screen -A'
 alias bli='brew list'
+# for a quick brew local search without pull requests, do bs
+alias brs='brew search'
+alias bri='brew install'
+alias bru='brew update ; echo "-- outdated --" ; brew outdated'
+alias bh='brew home'
+# use 240px to download and put title in filename
+alias ytdl='youtube-dl --title -f 5 '
 
 # taskwarrior
 alias ta='task'
@@ -188,12 +209,41 @@ alias bs='~/bin/b.sh'
 #alias et="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a ~/.emacs.d/bin/emacs-gui.sh"
 #alias ec="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a ~/.emacs.d/bin/emacs-gui.sh"
 
-# added 2012-10-15 after installing pip, virtualenv abd virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
+# added 2012-10-15 after installing pip, virtualenv abd virtualenvwrapper NOT CURR USING SO OFF
+#source /usr/local/bin/virtualenvwrapper.sh
 
 alias -g G='| egrep'
+alias -g FG='| fgrep'
 alias -g L='| less'
+alias -g WC='| wc -l'
+alias -g H='| head'
+alias -g HD='| head -24'
 alias -g T='| tail'
 alias -g TL='| tail -20'
 alias -g RE='~/README'
 alias -g AL='~/.zprezto/aliases.zsh'
+alias -g ZS='~/.zshrc'
+alias -g ZP='~/.zprezto/'
+alias -g NV=/Users/rahul/Library/Application\\\ Support/Notational\\\ Data
+alias val='vim -o AL ZS'
+
+# newest directory
+alias -g ND='*(/om[1])'
+# newest file
+alias -g NF='*(.om[1])'
+# replace ls in previous command with less
+alias rr='r ls=less'
+alias rl='r ls=l'
+alias rv='r ls=vim'
+
+alias rz='source ~/.zshrc && rehash'
+trap "source ~/.zshrc && rehash" USR1
+ # send pkill -usr1 zsh so all terminals source zshrc
+alias le='less'
+
+#alias bs='brew search'
+alias bu='brew uses'
+alias bd='brew deps'
+alias bm='~/bin/bookmark'
+# there is some command called w for seeing who is on system
+alias w='which'
