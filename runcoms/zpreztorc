@@ -20,6 +20,14 @@ zstyle ':prezto:*:*' color 'yes'
 
 # Set the Zsh functions to load (man zshcontrib).
 # zstyle ':prezto:load' zfunction 'zargs' 'zmv'
+#
+# Editor
+#
+
+# Set the key mapping style to 'emacs' or 'vi'.
+# changed to vi on 2012-10-26 (however substring shd work)
+# This must go before history-substring is installed
+zstyle ':prezto:module:editor' keymap 'vi'
 
 # Set the Prezto modules to load (browse modules).
 # The order matters.
@@ -42,12 +50,6 @@ zstyle ':prezto:load' pmodule \
 # plugins=(git ruby history-substring-search zsh-syntax-highlighting)
 
 #
-# Editor
-#
-
-# Set the key mapping style to 'emacs' or 'vi'.
-# changed to vi on 2012-10-26 (however substring shd work)
-zstyle ':prezto:module:editor' keymap 'vi'
 
 # Auto convert .... to ../..
 # zstyle ':prezto:module:editor' dot-expansion 'yes'
@@ -124,6 +126,7 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 #
 
 # Auto set the tab and window titles.
+# RK 2012-11-2 commented for tmux renaming titles
 zstyle ':prezto:module:terminal' auto-title 'yes'
 
 #
@@ -133,3 +136,28 @@ zstyle ':prezto:module:terminal' auto-title 'yes'
 # Auto start a session when Zsh is launched.
 # zstyle ':prezto:module:tmux' auto-start 'yes'
 
+# RK 2012-11-4 seems these were not having effect from .zshrc
+bindkey "A" accept-and-hold
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+bindkey "'" quote-line
+bindkey "Q" push-line-or-edit
+bindkey "^Q" push-line-or-edit
+bindkey -M viins '^r' history-incremental-search-backward
+bindkey -M vicmd '^r' history-incremental-search-backward
+# trying these out, not working in command mode, flaky
+bindkey -M vicmd "q" push-line-or-edit
+bindkey -M vicmd "a" accept-and-hold
+
+# taken from emacs bindings ~/tmp/bindemacs, for insert mode. If they
+# don't work, then add -M viins and check
+bindkey "^D" delete-char-or-list
+bindkey "^H" backward-delete-char
+bindkey "^W" backward-kill-word
+bindkey "^H" backward-kill-word
+bindkey "." insert-last-word
+bindkey "D" kill-word
+bindkey "F" emacs-forward-word
+bindkey "B" emacs-backward-word
+bindkey "d" kill-word
+bindkey "^?" backward-delete-char
